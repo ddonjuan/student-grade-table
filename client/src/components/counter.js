@@ -12,7 +12,7 @@ class Counter extends React.Component{
             </div>
         )
     }
-}
+} 
 function mapStateToProps(state){
     return{
         count: state.countReducer.count
