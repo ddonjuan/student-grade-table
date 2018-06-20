@@ -1,15 +1,45 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getStudentList } from '../actions';
+import { getStudentList, deleteStudent } from '../actions';
 
 class StudentList extends Component {
+
+    constructor(props) {
+
+        super(props);
+        this.getServerData();
+        this.deleteDataFromServer = this.deleteDataFromServer.bind(this);
+
+    }
+
+    async getServerData() {
+        await this.props.getStudentList();
+    }
+
+    async deleteDataFromServer(id) {
+        await this.props.deleteStudent(id);
+    }
+
     render() {
-        console.log('this.props.getStudentList function: ',this.props.getStudentList());
-        
-        this.props
-        debugger;
+
+        const { studentList } = this.props;
+
+        const students = studentList.map((student, index) => {
+            return (
+                <tr key={index}>
+                    <td >{student.student_name}</td>
+                    <td>{student.class_name}</td>
+                    <td>{student.grade_value}</td>
+                    <td><button onClick={() => {
+                        this.deleteDataFromServer(student.id);
+                        this.getServerData();
+                    }} className="btn btn-danger">Delete</button></td>
+                </tr>
+            )
+        });
+
         return (
-            <div classNameName="studentList">
+            <div className="studentList">
                 <div className="student-list-container col-xs-12 col-xs-9">
                     <table className="student-list page-header media-heading table">
                         <thead>
@@ -21,18 +51,21 @@ class StudentList extends Component {
                             </tr>
                         </thead>
                         <tbody>
+                            {students}
                         </tbody>
                     </table>
                 </div>
             </div>
         )
-
     }
 }
 function mapStateToProps(state) {
+
     return ({
-        studentList: state.studentListReducer.studentList
+        studentList: state.studentListReducer.studentList,
+        deleteStudent: state.deleteStudent
     });
+
 }
 
-export default connect(mapStateToProps, { getStudentList })(StudentList);
+export default connect(mapStateToProps, { getStudentList, deleteStudent })(StudentList);

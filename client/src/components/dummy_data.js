@@ -5,7 +5,7 @@ export default [
         permissions:'',
         'class': 'Bio',
         description: 'None',
-        grade: '0.84',
+        grade: '0.84'
     },
     {
         first_name: 'Kev',
@@ -13,7 +13,7 @@ export default [
         permissions:'',
         'class': 'AP Physics',
         description: 'None',
-        grade: '0.76',
+        grade: '0.76'
     },
     {
         first_name: '',
@@ -21,7 +21,7 @@ export default [
         permissions:'',
         'class': '',
         description: '',
-        grade: '',
+        grade: ''
     },
     {
         first_name: '',
@@ -29,6 +29,6 @@ export default [
         permissions:'',
         'class': '',
         description: '',
-        grade: '',
+        grade: ''
     },
 ]
