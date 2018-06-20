@@ -1,24 +1,23 @@
 module.exports = (webserver, mysql, database) => {
-    webserver.get('/api/get_student_data', (req, res)=> {
+    webserver.delete('/api/delete_student', (req, res)=> {
         const output = {
             success: false,
-            data: [],
             errors: [],
             message: ""
         };
 
-        let query = `SELECT 
-            id, 
-            class_name, 
-            student_name,
-            grade_value
-        FROM grade`;
+        let id = req.query.id;
 
-    database.query(query, (err, data, fields)=>{
+        query = `DELETE FROM grade
+                WHERE id = ?`;    
+        
+        let inserts = [id]        
+        let mysqlQuery = mysql.format(query, inserts);
+
+    database.query(mysqlQuery, (err, data, fields)=>{
             if(!err){
                 console.log("data: ",data)
                 output.success = true;
-                output.data = data;
                 output.message = "query was successful";
             }
             else{

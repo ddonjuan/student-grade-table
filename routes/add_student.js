@@ -1,20 +1,23 @@
 module.exports = (webserver, mysql, database) => {
-    webserver.get('/api/get_student_data', (req, res)=> {
+    webserver.post('/api/add_student', (req, res)=> {
         const output = {
             success: false,
             data: [],
             errors: [],
             message: ""
         };
+        const { class_name, student_name, grade_value} = req.body;
 
-        let query = `SELECT 
-            id, 
-            class_name, 
-            student_name,
-            grade_value
-        FROM grade`;
+        query = `INSERT INTO 
+                grade (class_name, student_name, grade_value)
+                VALUES (?,?,?)`;
+        
+        
+        let inserts = [ class_name, student_name, grade_value];
 
-    database.query(query, (err, data, fields)=>{
+        let mysqlQuery = mysql.format(query, inserts);
+
+    database.query(mysqlQuery, (err, data, fields)=>{
             if(!err){
                 console.log("data: ",data)
                 output.success = true;
