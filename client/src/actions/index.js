@@ -25,6 +25,12 @@ export function updateInput(name, value) {
         payload: { name, value }
     }
 }
+export function clearInput(name){
+    return{
+        type: types.CLEAR_INPUT,
+        payload: name
+    }
+}
 
 export function addStudent(student){
     const path = '/api/add_student';
