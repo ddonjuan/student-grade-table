@@ -1,25 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { updateInput, addStudent, getStudentList } from '../actions';
+import { updateInput, addStudent, getStudentList, clearInput } from '../actions';
 
 class AddStudent extends Component {
     constructor(props) {
-        super(props);
 
+        super(props);
         this.getDataFromServer();
-        // this.gradeAverage();
+        this.clearInputData = this.clearInputData.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.getDataFromServer = this.getDataFromServer.bind(this);
         this.handleAddStudent = this.handleAddStudent.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+
     }
-    // gradeAverage(){
-    //     this.props.getStudentList();
-    //     const {studentList} = this.props
-    // }
+
     handleSubmit(event){
         event.preventDefault();
     }
+
     async getDataFromServer() {
         await this.props.getStudentList();
         const { studentList } = this.props;
@@ -36,11 +35,19 @@ class AddStudent extends Component {
 
         await this.props.addStudent(student);
         this.getDataFromServer();
+        this.clearInputData();
     }
+    
     handleInputChange(event) {
         const { value, name } = event.target;
 
         this.props.updateInput(name, value);
+    }
+
+    clearInputData(){
+        for(let key in this.props.form){
+            this.props.clearInput(key);
+        }
     }
 
     render() {
@@ -70,7 +77,7 @@ class AddStudent extends Component {
                             placeholder="Student Grade" />
                     </div>
                         <button onClick={this.handleAddStudent} type="button" className="btn btn-success" >Add</button>
-                        <button type="button" className="btn btn-secondary" >Cancel</button>
+                        <button onClick={this.clearInputData} type="button" className="btn btn-secondary" >Clear</button>
                         <button onClick={this.getDataFromServer} type="button" className="btn btn-primary">Retrieve Data</button>
 
                 </div>
@@ -89,4 +96,4 @@ function mapStateToProps(state) {
         studentList: state.studentListReducer.studentList
     }
 }
-export default connect(mapStateToProps, { updateInput, addStudent, getStudentList })(AddStudent);
+export default connect(mapStateToProps, { updateInput, addStudent, getStudentList, clearInput })(AddStudent);

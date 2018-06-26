@@ -26,9 +26,9 @@ class Header extends Component {
         const {studentList} = this.props;
         const student = this.studentAverage(studentList);
         return (
-            <div className="header container-fluid">
+            <div className="header">
                 <div className="col-xs-12 col-md-12 page-header">
-                    <h1 className="hidden-xs">Student Grade Table
+                    <h1 className="hidden-xs student-grade-header">Student Grade Table
                         <small className="pull-right ">Grade Average : <span className="avgGrade label label-default">{student}</span></small>
                     </h1>
                     <h3 className="visible-xs">Student Grade Table
