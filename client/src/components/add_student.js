@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import DeleteWarningModal from './delete_warning_modal';
 import { connect } from 'react-redux';
 import { updateInput, addStudent, getStudentList, clearInput } from '../actions';
 
@@ -54,8 +55,9 @@ class AddStudent extends Component {
         const { student_name, class_name, grade_value } = this.props.form;
         return (
             <div className="header">
-                <div className="student-add-form col-xs-12 col-md-3 form-group pull-right">
+                <div className="student-add-form col-xs-12 col-md-3 col-lg-3 form-group pull-right">
                     <h4>Add Student</h4>
+                    <DeleteWarningModal/>
                     <div className="input-group form-group">
                         <span className="input-group-addon">
                             <span className="glyphicon glyphicon-user"></span>
@@ -73,13 +75,11 @@ class AddStudent extends Component {
                         <span className="input-group-addon">
                             <span className="glyphicon glyphicon-education"></span>
                         </span>
-                        <input value={grade_value} onChange={this.handleInputChange} type="text" className="form-control" name="grade_value" id="studentGrade"
+                        <input value={grade_value} onChange={this.handleInputChange} type="number" className="form-control" name="grade_value" id="studentGrade"
                             placeholder="Student Grade" />
                     </div>
                         <button onClick={this.handleAddStudent} type="button" className="btn btn-success" >Add</button>
-                        <button onClick={this.clearInputData} type="button" className="btn btn-secondary" >Clear</button>
-                        <button onClick={this.getDataFromServer} type="button" className="btn btn-primary">Retrieve Data</button>
-
+                        <button onClick={this.clearInputData} type="button" className="btn btn-secondary">Clear</button>
                 </div>
             </div>
         )

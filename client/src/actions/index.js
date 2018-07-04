@@ -54,3 +54,26 @@ export function deleteStudent(id){
         payload: response
     }
 }
+
+export function showModal(student){
+    return{
+        type: types.SHOW_MODAL,
+        payload: {
+            isShowing: true,
+            student,
+            studentName: student.student_name,
+            studentGrade: student.grade_value,
+            className: student.class_name
+        }
+    }
+}
+export function hideModal(){
+    console.log("hide modal function fired: ");
+
+    return{
+        type: types.HIDE_MODAL,
+        payload: {
+            isShowing:false
+        }
+    }
+}

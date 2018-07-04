@@ -5,6 +5,7 @@ import {incrementCount} from '../actions';
 class Counter extends React.Component{
     render(){
         const {count} = this.props
+        console.log(count);
         return(
             <div>
                 <h1 className="count">Count: {count}</h1>
