@@ -19,6 +19,21 @@ export default (state = DEFAULT_STATE, action)=>{
                     errors: [...state.errors, action.payload.data.errors]
                 }
             }
+            
+        case types.UPDATE_STUDENT:
+            if(action.payload.data.success){
+                return{
+                    ...state,
+                    updateStudent: action.payload.data.data
+                }
+            }
+            else{
+                return{
+                    ...state,
+                    errors: [...state.errors, action.payload.data.errors]
+                }
+            }
+
         case types.DELETE_STUDENT:
             if(action.payload.data.success){
                 return {

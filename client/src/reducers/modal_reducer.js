@@ -1,7 +1,8 @@
 import types from '../actions/types';
 
 const DEFAULT_STATE = {
-    isShowing: false
+    isShowing: false,
+    isShowingEdit: false
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -10,6 +11,7 @@ export default (state = DEFAULT_STATE, action) => {
             return{
                 ...state,
                 isShowing: action.payload.isShowing,
+                isShowingEdit: action.payload.isShowingEdit,
                 student: action.payload.student,
                 studentName: action.payload.studentName,
                 studentGrade: action.payload.studentGrade,
@@ -18,7 +20,8 @@ export default (state = DEFAULT_STATE, action) => {
         case types.HIDE_MODAL:
             return{
                 ...state,
-                isShowing: action.payload.isShowing
+                isShowing: action.payload.isShowing,
+                isShowingEdit: action.payload.isShowingEdit
             }  
         default:
             return state;      

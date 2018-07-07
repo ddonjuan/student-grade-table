@@ -40,6 +40,29 @@ export function addStudent(student){
         payload: response
     }
 }
+export function updateStudent(student){
+    console.log("Update student function ran in actions index.js");
+    let id = student.id;
+    let className = student.class_name;
+    let studentName = student.student_name;
+    let studentGrade = student.grade_value;
+    console.log("student id: ", id, className, studentName, studentGrade);
+    const path = '/api/edit_student';
+    const response = axios.post(path, student,{
+        params: {
+            id,
+            className,
+            studentName,
+            studentGrade
+        }
+    });
+    console.log("this is the response in updateStudent: ", response);
+    return{
+        type: types.UPDATE_STUDENT,
+        payload: response
+    }
+}
+
 export function deleteStudent(id){
     console.log("Delete function ran in index.js");
 
@@ -56,10 +79,23 @@ export function deleteStudent(id){
 }
 
 export function showModal(student){
+    console.log("show modal fired");
     return{
         type: types.SHOW_MODAL,
         payload: {
             isShowing: true,
+            student,
+            studentName: student.student_name,
+            studentGrade: student.grade_value,
+            className: student.class_name
+        }
+    }
+}
+export function editModalDisplay(student){
+    return{
+        type: types.SHOW_MODAL,
+        payload: {
+            isShowingEdit: true,
             student,
             studentName: student.student_name,
             studentGrade: student.grade_value,
@@ -73,7 +109,8 @@ export function hideModal(){
     return{
         type: types.HIDE_MODAL,
         payload: {
-            isShowing:false
+            isShowing: false,
+            isShowingEdit: false
         }
     }
 }

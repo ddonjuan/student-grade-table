@@ -21,10 +21,10 @@ class deleteWarningModal extends Component {
     }
 
     render(){
-        const {studentName, studentGrade, className, hideModal} = this.props;
+        const {studentName, studentGrade, className, hideModal, modalOpen} = this.props;
 
         return (
-                <div className={`modal ${this.props.modalClose}`}>
+                <div className={`modal ${modalOpen}`}>
                     <div className="modal-content">
                         <span onClick={()=>{this.props.hideModal()}} className="close-btn">&times;</span>
                         <h2 className="page-header title">Please Confirm Deletion</h2>
