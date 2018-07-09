@@ -7,8 +7,8 @@ module.exports = (webserver, mysql, database) => {
             message: ""
         };
 
-        const id = req.query.id;
-        const { class_name, student_name, grade_value} = req.body;
+        // const id = req.query.id;
+        const { class_name, student_name, grade_value, id} = req.body.student;
 
 
         query = `UPDATE grade

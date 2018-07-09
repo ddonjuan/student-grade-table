@@ -48,13 +48,8 @@ export function updateStudent(student){
     let studentGrade = student.grade_value;
     console.log("student id: ", id, className, studentName, studentGrade);
     const path = '/api/edit_student';
-    const response = axios.post(path, student,{
-        params: {
-            id,
-            className,
-            studentName,
-            studentGrade
-        }
+    const response = axios.post(path,{
+         student
     });
     console.log("this is the response in updateStudent: ", response);
     return{
