@@ -101,3 +101,35 @@ p{
   0%{opacity:0}
   100%{opacity: 1;}
 }
+
+/* ============ Input Validation ==============*/
+.green{
+  border: 1px solid green !important;
+  box-shadow: inset 0 0 10px,
+    inset 0 0 10px rgba(100, 228, 88, .5) !important;}
+.red{
+  border: 1px solid red !important;
+  box-shadow: inset 0 0 10px,
+    inset 0 0 10px rgba(215, 35, 44, .5) !important; 
+}
+.reveal{
+ visibility: hidden;
+ z-index: 1;
+ position: absolute;
+ margin-bottom: 3%;
+}
+.bones{
+  visibility: visible;
+  position: relative;
+}
+.simplebox {
+  outline: none;
+  border: none !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.reveal div{
+  margin: 2%;
+}
