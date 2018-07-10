@@ -35,7 +35,7 @@ class AddStudent extends Component {
                     this.setState({
                         nameValidation: true,
                         revealNameErrors: false,
-                        revealRedColor: false
+                        revealNameRedColor: false
                     });
                     return
                 }
@@ -43,7 +43,7 @@ class AddStudent extends Component {
                     this.setState({
                         nameValidation: false,
                         revealNameErrors: true,
-                        revealRedColor: true
+                        revealNameRedColor: true
                     })
                     return;
 
@@ -142,9 +142,16 @@ class AddStudent extends Component {
             this.props.clearInput(key);
         }
         this.setState({
-            nameValidation:false,
+            nameValidation: false,
             classValidation: false,
-            gradeValidation: false
+            gradeValidation: false,
+            revealNameErrors: false,
+            revealGradeErrors: false,
+            revealClassErrors: false,
+            revealNameRedColor: false,
+            revealGradeRedColor: false,
+            revealClassRedColor: false
+
         })
     }
 
@@ -152,9 +159,9 @@ class AddStudent extends Component {
         const { student_name, class_name, grade_value } = this.props.form;
         const { nameValidation, classValidation, gradeValidation, revealNameErrors,revealGradeErrors, revealClassErrors, revealNameRedColor, revealGradeRedColor, revealClassRedColor } = this.state;
 
-        const showNameError = revealNameErrors ? 'bones red' : '';
-        const showGradeError = revealGradeErrors ? 'bones red' : '';
-        const showClassError = revealClassErrors ? 'bones red' : '';
+        const showNameError = revealNameErrors ? 'reveal red' : '';
+        const showGradeError = revealGradeErrors ? 'reveal red' : '';
+        const showClassError = revealClassErrors ? 'reveal red' : '';
 
         const nameInput = nameValidation ? 'green' : '';
         const gradeInput = gradeValidation ? 'green' : '';
@@ -176,7 +183,7 @@ class AddStudent extends Component {
                         </span>
                         <input value={student_name} onChange={this.handleInputChange} type="text" className={`form-control ${nameInput} ${revealNameRed}`} name="student_name" id="studentName" placeholder="Student Name" />
                     </div>
-                    <div className={`reveal ${showNameError}`}><div>Name must start with a letter and contain at least 2 characters</div></div>
+                    <div className={`suppress ${showNameError}`}><div>Name must start with a letter and contain at least 2 characters</div></div>
 
                     <div className={` ${classInput} ${revealClassRed}  input-group form-group simplebox`}>
                         <span className={`${classInput} ${revealClassRed} input-group-addon`}>
@@ -185,7 +192,7 @@ class AddStudent extends Component {
                         <input value={class_name} onChange={this.handleInputChange} type="text" className={`form-control ${classInput} ${revealClassRed} `} name="class_name" id="course"
                             placeholder="Student Course" />
                     </div>
-                    <div className={`reveal ${showClassError}`}><div>Class Input must start with at least two characters</div></div>
+                    <div className={`suppress ${showClassError}`}><div>Class Input must start with at least two characters</div></div>
 
                     <div className={` ${gradeInput} ${revealGradeRed} input-group form-group simplebox`}>
                         <span className={`${gradeInput} ${revealGradeRed} input-group-addon`}>
@@ -194,7 +201,7 @@ class AddStudent extends Component {
                         <input value={grade_value} onChange={this.handleInputChange} type="number" className={`form-control ${gradeInput} ${revealGradeRed}`} name="grade_value" id="studentGrade"
                             placeholder="Student Grade" />
                     </div>
-                    <div className={`reveal ${showGradeError}`}><div>Grade input must be 0 - 100</div></div>
+                    <div className={`suppress ${showGradeError}`}><div>Grade input must be 0 - 100</div></div>
 
                     <button onClick={this.handleAddStudent} type="button" className="btn btn-success" >Add</button>
                     <button onClick={this.clearInputData} type="button" className="btn btn-secondary">Clear</button>
