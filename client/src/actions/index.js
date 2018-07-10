@@ -41,12 +41,7 @@ export function addStudent(student){
     }
 }
 export function updateStudent(student){
-    console.log("Update student function ran in actions index.js");
-    let id = student.id;
-    let className = student.class_name;
-    let studentName = student.student_name;
-    let studentGrade = student.grade_value;
-    console.log("student id: ", id, className, studentName, studentGrade);
+
     const path = '/api/edit_student';
     const response = axios.post(path,{
          student

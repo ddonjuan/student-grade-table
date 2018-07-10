@@ -32,9 +32,9 @@ class EditModal extends Component{
     }
 
     handleInputChange(event) {
-        this.setState({
-            studentName: event.target.value
-        })
+        const { value, name } = event.target;
+        this.props.updateInput(name, value);
+
     }
 
     clearInputData(){
@@ -61,7 +61,7 @@ class EditModal extends Component{
                         <span className="input-group-addon">
                             <span className="glyphicon glyphicon-user"></span>
                         </span>
-                        <input value={studentName} onChange={this.handleInputChange} type="text" className="form-control" name="student_name" id="studentName" placeholder="Student Name" />
+                        <input value={student_name} onChange={this.handleInputChange} type="text" className="form-control" name="student_name" id="studentName" placeholder="Student Name" />
                     </div>
                     <div className="input-group form-group">
                         <span className="input-group-addon">
@@ -84,7 +84,7 @@ class EditModal extends Component{
                             console.log("edit modal modal opened: ", this.props)
                         this.editStudent();
                         this.getDataFromServer();
-                        hideModal()
+                        this.props.hideModal()
 
                         }} 
                         className="confirm">
