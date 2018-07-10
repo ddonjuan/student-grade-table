@@ -6,11 +6,17 @@ import { updateInput, addStudent, getStudentList, clearInput } from '../actions'
 class AddStudent extends Component {
     constructor(props) {
         super(props);
-        this.state={
-            nameValidation:false,
-            classValidation:false,
-            gradeValidation:false,
-            revealErrors: false
+        this.state = {
+            nameValidation: false,
+            classValidation: false,
+            gradeValidation: false,
+            revealNameErrors: false,
+            revealGradeErrors: false,
+            revealClassErrors: false,
+            revealNameRedColor: false,
+            revealGradeRedColor: false,
+            revealClassRedColor: false
+
         }
         this.getDataFromServer();
         this.clearInputData = this.clearInputData.bind(this);
@@ -21,68 +27,73 @@ class AddStudent extends Component {
 
     }
 
-    classNameValidation(student){
-        this.setState({
-            revealErrors: true
-        })
+    classNameValidation(name, value) {
+        switch (name) {
+            case 'student_name':
+                var studentValidation = /[a-zA-Z]+.*|.*[a-zA-Z]+|.*[a-zA-Z]+.*/.test(value);
+                if (studentValidation && value.length > 1) {
+                    this.setState({
+                        nameValidation: true,
+                        revealNameErrors: false,
+                        revealRedColor: false
+                    });
+                    return
+                }
+                else {
+                    this.setState({
+                        nameValidation: false,
+                        revealNameErrors: true,
+                        revealRedColor: true
+                    })
+                    return;
 
-        var studentValidation = /[a-zA-Z]+.*|.*[a-zA-Z]+|.*[a-zA-Z]+.*/.test(student);
-        if(studentValidation && student.length - 1 > 2){
-            console.log("this is the string inside the val", student.length);
-            this.setState({
-                nameValidation: true,
-                revealErrors:false
-            });
-            return
+                }
+            case 'class_name':
+                var classNameValidation = /^[a-zA-Z]+[a-zA-Z0-9\s]{1,30}$/.test(value);
+                if (classNameValidation && value.length > 1) {
+                    console.log("this is the string inside the val", value.length);
+                    this.setState({
+                        classValidation: true,
+                        revealClassErrors: false,
+                        revealClassRedColor: false
+                    });
+                    return
+                }
+                else {
+                    this.setState({
+                        classValidation: false,
+                        revealClassErrors: true,
+                        revealClassRedColor: true
+                    })
+                    return;
+
+                }
+            case 'grade_value':
+                if (value >= 0 && value <= 100 && value.length > 0 ) {
+                    console.log("this is the string inside the val", value.length);
+                    this.setState({
+                        gradeValidation: true,
+                        revealGradeErrors: false,
+                        revealGradeRedColor: false
+                    });
+                    return
+                }
+                else {
+                    this.setState({
+                        gradeValidation: false,
+                        revealGradeErrors: true,
+                        revealGradeRedColor: true
+                    })
+                    return;
+
+                }
+            default:
+                return console.log('nope sorry');
         }
-        else{
-            this.setState({
-                nameValidation:false
-            })
-            return;   
 
-        }
-
-        // console.log("student boolean top: ", studentValidation);
-
-        // for(let key in this.props.form){
-        //     console.log("PPPFPFPFPFPFPFPFPFP",key);
-        //     switch(key){
-        //         case key === 'student_name':
-        //             let studentValidation = /^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/.test(key);
-        //             console.log("name in the classNameValidation: ", key);
-        //             console.log("student boolean PGPGPGPGPGPGPGPGPGPGPGP: ", studentValidation);
-        //             if(!studentValidation){
-        //                 this.setState({
-        //                     nameValidation: false
-        //                 })
-        //                 console.log("this is the state: ", this.state.nameValidation);
-        //                 return
-        //             }
-    
-        //         case key === 'class_name':
-        //             let classValidation = /^[A-Za-z0-9\s-]+$/.test(key);
-        //             if(!classValidation){
-        //                 this.setState({
-        //                     classValidation: false
-        //                 });
-        //                 return
-        //             }
-    
-        //         case key === 'grade_value':
-        //             let  gradeValidation = /[0-9]+(\.[0-9][0-9]?)?/.test(key);
-        //             if(!gradeValidation){
-        //                 this.setState({
-        //                     gradeValidation: false
-        //                 })
-        //                 return
-        //             }
-    
-        //     }
-        // }        
     }
 
-    handleSubmit(event){
+    handleSubmit(event) {
         event.preventDefault();
     }
 
@@ -90,73 +101,103 @@ class AddStudent extends Component {
         await this.props.getStudentList();
         const { studentList } = this.props;
     }
-    
+
     async handleAddStudent() {
+        const {nameValidation, gradeValidation, classValidation} = this.state;
         const { student_name, class_name, grade_value } = this.props.form;
+
         const student = {
             class_name,
             student_name,
             grade_value
         };
+        if(nameValidation && gradeValidation && classValidation){
+            await this.props.addStudent(student);
+            this.getDataFromServer();
+            this.clearInputData();
 
-        await this.props.addStudent(student);
-        this.getDataFromServer();
-        this.clearInputData();
+            this.setState({
+                nameValidation:false,
+                classValidation: false,
+                gradeValidation: false
+            })
+        }
+        else{
+            return;
+        }
+
     }
-    
+
     handleInputChange(event) {
-        const { student_name, class_name, grade_value } = this.props.form;
         const { value, name } = event.target;
+        console.log("THIS IS THE VALUE IN HANDLEINPUTCHANGE: ", value);
+        console.log("THIS IS THE NAME IN HANDLINPUTCHANGE: ", name);
         this.props.updateInput(name, value);
-        this.classNameValidation(student_name);
+        this.classNameValidation(name, value);
 
     }
 
-    clearInputData(){
-        for(let key in this.props.form){
+    clearInputData() {
+        for (let key in this.props.form) {
             this.props.clearInput(key);
         }
+        this.setState({
+            nameValidation:false,
+            classValidation: false,
+            gradeValidation: false
+        })
     }
 
     render() {
         const { student_name, class_name, grade_value } = this.props.form;
-        const {nameValidation, classValidation, gradeValidation, revealErrors} = this.state;
-        console.log("this is the student name in the form: ", student_name.length);
-        console.log("this is the name validation state: ", nameValidation);
-        const showError = revealErrors ? 'bones red' : '';
-        const validInput = nameValidation ? 'green' : 'red';
-    
+        const { nameValidation, classValidation, gradeValidation, revealNameErrors,revealGradeErrors, revealClassErrors, revealNameRedColor, revealGradeRedColor, revealClassRedColor } = this.state;
 
-        
+        const showNameError = revealNameErrors ? 'bones red' : '';
+        const showGradeError = revealGradeErrors ? 'bones red' : '';
+        const showClassError = revealClassErrors ? 'bones red' : '';
+
+        const nameInput = nameValidation ? 'green' : '';
+        const gradeInput = gradeValidation ? 'green' : '';
+        const classInput = classValidation ? 'green' : '';
+
+        const revealNameRed = revealNameRedColor ? 'red' : '';
+        const revealGradeRed = revealGradeRedColor ? 'red': '';
+        const revealClassRed = revealClassRedColor ? 'red' : '';
+
         return (
             <div className="header">
                 <div className="student-add-form col-xs-12 col-md-3 col-lg-3 form-group pull-right">
                     <h4>Add Student</h4>
-                    <DeleteWarningModal/>
-                    <div className={` ${validInput} input-group form-group simplebox`}>
-                        <span className={`${validInput} input-group-addon`}>
+                    <DeleteWarningModal />
+
+                    <div className={` ${nameInput} ${revealNameRed} input-group form-group simplebox`}>
+                        <span className={`${nameInput} ${revealNameRed} input-group-addon`}>
                             <span className="glyphicon glyphicon-user"></span>
                         </span>
-                        <input value={student_name} onChange={this.handleInputChange} type="text" className={`form-control ${validInput}`} name="student_name" id="studentName" placeholder="Student Name" />
+                        <input value={student_name} onChange={this.handleInputChange} type="text" className={`form-control ${nameInput} ${revealNameRed}`} name="student_name" id="studentName" placeholder="Student Name" />
                     </div>
-                    <div className={`reveal ${showError}`}><div>Name must start with a letter and contain at least 2 characters</div></div>
+                    <div className={`reveal ${showNameError}`}><div>Name must start with a letter and contain at least 2 characters</div></div>
 
-                    <div className="input-group form-group">
-                        <span className="input-group-addon">
+                    <div className={` ${classInput} ${revealClassRed}  input-group form-group simplebox`}>
+                        <span className={`${classInput} ${revealClassRed} input-group-addon`}>
                             <span className="glyphicon glyphicon-list-alt"></span>
                         </span>
-                        <input value={class_name} onChange={this.handleInputChange} type="text" className="form-control" name="class_name" id="course"
+                        <input value={class_name} onChange={this.handleInputChange} type="text" className={`form-control ${classInput} ${revealClassRed} `} name="class_name" id="course"
                             placeholder="Student Course" />
                     </div>
-                    <div className="input-group form-group">
-                        <span className="input-group-addon">
+                    <div className={`reveal ${showClassError}`}><div>Class Input must start with at least two characters</div></div>
+
+                    <div className={` ${gradeInput} ${revealGradeRed} input-group form-group simplebox`}>
+                        <span className={`${gradeInput} ${revealGradeRed} input-group-addon`}>
                             <span className="glyphicon glyphicon-education"></span>
                         </span>
-                        <input value={grade_value} onChange={this.handleInputChange} type="number" className="form-control" name="grade_value" id="studentGrade"
+                        <input value={grade_value} onChange={this.handleInputChange} type="number" className={`form-control ${gradeInput} ${revealGradeRed}`} name="grade_value" id="studentGrade"
                             placeholder="Student Grade" />
                     </div>
-                        <button onClick={this.handleAddStudent} type="button" className="btn btn-success" >Add</button>
-                        <button onClick={this.clearInputData} type="button" className="btn btn-secondary">Clear</button>
+                    <div className={`reveal ${showGradeError}`}><div>Grade input must be 0 - 100</div></div>
+
+                    <button onClick={this.handleAddStudent} type="button" className="btn btn-success" >Add</button>
+                    <button onClick={this.clearInputData} type="button" className="btn btn-secondary">Clear</button>
                 </div>
             </div>
         )
