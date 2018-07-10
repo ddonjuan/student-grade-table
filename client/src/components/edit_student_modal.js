@@ -15,7 +15,7 @@ class EditModal extends Component{
         this.clearInputData = this.clearInputData.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-
+        
     }
 
     async getDataFromServer() {
@@ -24,6 +24,7 @@ class EditModal extends Component{
 
     async editStudent(){
         const {student} = this.props;
+        console.log("PDPDPDPDKEKEKEKJDDHFJFJF: ", student);
         await this.props.updateStudent(student);
     }
 
@@ -48,6 +49,7 @@ class EditModal extends Component{
         const { student_name, class_name, grade_value } = this.props.form;
         console.log("student name: ", student_name);
         console.log("student in props without form: ", studentName);
+        console.log("THis is the STUDENT IN the EDIT MODAL: ", student);
 
 
         return(

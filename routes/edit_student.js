@@ -11,7 +11,7 @@ module.exports = (webserver, mysql, database) => {
         const { class_name, student_name, grade_value, id} = req.body.student;
 
 
-        query = `UPDATE grade
+        let query = `UPDATE grade
             SET class_name = ?, 
                 student_name = ?, 
                 grade_value = ?

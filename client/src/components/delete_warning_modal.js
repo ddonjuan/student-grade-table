@@ -62,7 +62,7 @@ class deleteWarningModal extends Component {
 function mapStateToProps(state){
     return{
         modal: state.modalReducer.isShowing,
-        deleteStudent: state.deleteStudent,
+        // deleteStudent: state.deleteStudent,
         studentList: state.studentListReducer.studentList,
         student: state.modalReducer.student,
         studentName: state.modalReducer.studentName,
