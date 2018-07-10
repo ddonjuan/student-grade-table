@@ -49,7 +49,7 @@ class AddStudent extends Component {
 
                 }
             case 'class_name':
-                var classNameValidation = /^[a-zA-Z]+[a-zA-Z0-9\s]{1,30}$/.test(value);
+                var classNameValidation = /^[a-zA-Z]+[a-zA-Z0-9\s\.]{1,30}$/.test(value);
                 if (classNameValidation && value.length > 1) {
                     console.log("this is the string inside the val", value.length);
                     this.setState({
@@ -122,7 +122,7 @@ class AddStudent extends Component {
                 gradeValidation: false
             })
         }
-        else{
+        if(student_name.length === 0 && class_name.length === 0 && grade_value.length === 0){
             this.setState({
                 classValidation: false,
                 revealClassErrors: true,
@@ -134,10 +134,8 @@ class AddStudent extends Component {
                 revealGradeErrors: true,
                 revealGradeRedColor: true
 
-            })
-            return;
+            });
         }
-
     }
 
     handleInputChange(event) {
