@@ -123,6 +123,18 @@ class AddStudent extends Component {
             })
         }
         else{
+            this.setState({
+                classValidation: false,
+                revealClassErrors: true,
+                revealClassRedColor: true,
+                nameValidation: false,
+                revealNameErrors: true,
+                revealNameRedColor: true,
+                gradeValidation: false,
+                revealGradeErrors: true,
+                revealGradeRedColor: true
+
+            })
             return;
         }
 
