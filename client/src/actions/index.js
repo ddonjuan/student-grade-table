@@ -40,6 +40,19 @@ export function addStudent(student){
         payload: response
     }
 }
+export function updateStudent(student){
+
+    const path = '/api/edit_student';
+    const response = axios.post(path,{
+         student
+    });
+
+    return{
+        type: types.UPDATE_STUDENT,
+        payload: response
+    }
+}
+
 export function deleteStudent(id){
     console.log("Delete function ran in index.js");
 
@@ -55,25 +68,5 @@ export function deleteStudent(id){
     }
 }
 
-export function showModal(student){
-    return{
-        type: types.SHOW_MODAL,
-        payload: {
-            isShowing: true,
-            student,
-            studentName: student.student_name,
-            studentGrade: student.grade_value,
-            className: student.class_name
-        }
-    }
-}
-export function hideModal(){
-    console.log("hide modal function fired: ");
 
-    return{
-        type: types.HIDE_MODAL,
-        payload: {
-            isShowing:false
-        }
-    }
-}
+

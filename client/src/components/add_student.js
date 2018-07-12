@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import DeleteWarningModal from './delete_warning_modal';
 import { connect } from 'react-redux';
 import { updateInput, addStudent, getStudentList, clearInput } from '../actions';
 
@@ -185,6 +184,7 @@ class AddStudent extends Component {
             <div className="header">
                 <div className="student-add-form col-xs-12 col-md-3 col-lg-3 form-group pull-right">
                     <h4>Add Student</h4>
+
                     <DeleteWarningModal />
 
                     <div className={` ${nameInput} ${revealNameRed} input-group form-group simplebox`}>
