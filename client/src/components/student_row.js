@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux';
-import { editModalDisplay } from '../actions';
 import WarningModal from './delete_warning_modal';
 import EditModal from './edit_student_modal';
 
@@ -61,11 +59,6 @@ class StudentRow extends Component {
         )
     }
 }
+export default StudentRow;
 
-function mapStateToProps(state) {
-    return ({
-        editModal: state.modalReducer.isShowingEdit
-    })
-}
 
-export default connect(mapStateToProps, { editModalDisplay })(StudentRow);

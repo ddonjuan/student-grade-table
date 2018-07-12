@@ -6,6 +6,4 @@ export default {
     ADD_STUDENT: 'add_student',
     UPDATE_STUDENT: 'update_student',
     DELETE_STUDENT: 'delete_student',
-    SHOW_MODAL: 'show_modal',
-    HIDE_MODAL: 'hide_modal'
 };

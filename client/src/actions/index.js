@@ -68,39 +68,5 @@ export function deleteStudent(id){
     }
 }
 
-export function showModal(student){
-    console.log("show modal fired");
-    return{
-        type: types.SHOW_MODAL,
-        payload: {
-            isShowing: true,
-            student,
-            studentName: student.student_name,
-            studentGrade: student.grade_value,
-            className: student.class_name
-        }
-    }
-}
-export function editModalDisplay(student){
-    return{
-        type: types.SHOW_MODAL,
-        payload: {
-            isShowingEdit: true,
-            student,
-            studentName: student.student_name,
-            studentGrade: student.grade_value,
-            className: student.class_name
-        }
-    }
-}
-export function hideModal(){
-    console.log("hide modal function fired: ");
 
-    return{
-        type: types.HIDE_MODAL,
-        payload: {
-            isShowing: false,
-            isShowingEdit: false
-        }
-    }
-}
+

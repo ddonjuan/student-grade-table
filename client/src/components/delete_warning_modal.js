@@ -53,10 +53,5 @@ class deleteWarningModal extends Component {
     }
 }
 
-function mapStateToProps(state){
-    return{
-        student: state.modalReducer.student,
-    }
-}
 
-export default connect(mapStateToProps, {deleteStudent, getStudentList})(deleteWarningModal);
+export default connect(null, {deleteStudent, getStudentList})(deleteWarningModal);
