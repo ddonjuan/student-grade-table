@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
-import {hideModal, deleteStudent, getStudentList} from '../actions';
+import { connect } from 'react-redux';
+import { deleteStudent, getStudentList } from '../actions';
 
 class deleteWarningModal extends Component {
     constructor(props){
         super(props);
 
-        this.getServerData();
         this.deleteDataFromServer = this.deleteDataFromServer.bind(this);
-
     }
 
     async getServerData() {
@@ -16,61 +14,49 @@ class deleteWarningModal extends Component {
     }
 
     async deleteDataFromServer() {
-        const {currentStudent} = this.props;
-        await this.props.deleteStudent(currentStudent.id);
+        const { id } = this.props.currentStudent;
+        await this.props.deleteStudent(id);
+        this.getServerData();
+        this.props.toggleDeleteModal();
     }
 
     render(){
-        const {studentName, studentGrade, className, hideModal, modalOpen} = this.props;
+        const { student_name, class_name, grade_value } = this.props.currentStudent;
 
         return (
-                <div className={`modal ${modalOpen}`}>
-                    <div className="modal-content">
-                        <span onClick={()=>{this.props.hideModal()}} className="close-btn">&times;</span>
-                        <h2 className="page-header title">Please Confirm Deletion</h2>
-                        <h5>Are you sure you want to delete this record?</h5>
-                        <div className="student-info">
-                            <p>Student Name: <span>{studentName}</span></p>
-                            <p>Course Name: <span>{className}</span></p>
-                            <p>Student Grade: <span>{studentGrade}</span></p>
-                        </div>    
-                        <div className="button-holder">
-                            <button 
-                                onClick={()=>{
-                                this.deleteDataFromServer();
-                                this.getServerData();
-                                hideModal()
+            <div className="modal show">
+                <div className="modal-content">
+                    <span onClick={this.props.toggleDeleteModal} className="close-btn">&times;</span>
+                    <h2 className="page-header title">Please Confirm Deletion</h2>
+                    <h5>Are you sure you want to delete this record?</h5>
+                    <div className="student-info">
+                        <p>Student Name: <span>{student_name}</span></p>
+                        <p>Course Name: <span>{class_name}</span></p>
+                        <p>Student Grade: <span>{grade_value}</span></p>
+                    </div>    
+                    <div className="button-holder">
+                        <button 
+                            onClick={this.deleteDataFromServer} 
+                            className="confirm">
+                            Confirm
+                            </button>
 
-                                }} 
-                                className="confirm">
-                                Confirm
-                                </button>
-
-                            <button 
-                                onClick={()=>{
-                                    hideModal()
-                                    }}
-                                className="cancel">
-                                Cancel
-                                </button>
-                        </div>
+                        <button 
+                            onClick={this.props.toggleDeleteModal}
+                            className="cancel">
+                            Cancel
+                            </button>
                     </div>
                 </div>
+            </div>
         )
     }
 }
+
 function mapStateToProps(state){
     return{
-        modal: state.modalReducer.isShowing,
-        // deleteStudent: state.deleteStudent,
-        studentList: state.studentListReducer.studentList,
         student: state.modalReducer.student,
-        studentName: state.modalReducer.studentName,
-        studentGrade: state.modalReducer.studentGrade,
-        className: state.modalReducer.className
-
-
-
     }
 }
-export default connect(mapStateToProps, {hideModal, deleteStudent, getStudentList})(deleteWarningModal);
+
+export default connect(mapStateToProps, {deleteStudent, getStudentList})(deleteWarningModal);

@@ -20,7 +20,7 @@ module.exports = (webserver, mysql, database) => {
         let inserts = [class_name, student_name, grade_value, id];
 
         let mysqlQuery = mysql.format(query, inserts);
-
+        console.log('mysql query', mysqlQuery);
     database.query(mysqlQuery, (err, data, fields)=>{
             if(!err){
                 console.log("data: ",data)

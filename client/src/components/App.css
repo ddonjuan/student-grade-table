@@ -19,7 +19,7 @@
 
 
 .modal{
-  visibility: hidden;
+  /* visibility: hidden; */
   animation: fade-in 270ms;
   position:absolute;
   z-index:1;

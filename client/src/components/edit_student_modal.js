@@ -1,21 +1,27 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { getStudentList, showModal, hideModal, updateInput, clearInput, updateStudent } from '../actions';
+import { getStudentList, updateStudent } from '../actions';
 
 class EditModal extends Component{
     constructor(props){
         super(props);
-        this.state={
-            studentName: '',
-            studentGrade: '',
-            courseName: ''
+        this.state = {
+            student_name: '',
+            grade_value: '',
+            class_name: ''
         }
 
-        this.getDataFromServer();
-        this.clearInputData = this.clearInputData.bind(this);
+        this.editStudent = this.editStudent.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        
+        this.populateEditFields = this.populateEditFields.bind(this);        
+    }
+
+    componentDidMount() {
+        this.populateEditFields();
+    }
+
+    async populateEditFields() {
+        await this.setState({ ...this.props.currentStudent });
     }
 
     async getDataFromServer() {
@@ -23,105 +29,63 @@ class EditModal extends Component{
     }
 
     async editStudent(){
-        const {student} = this.props;
-        console.log("PDPDPDPDKEKEKEKJDDHFJFJF: ", student);
+        const student = { ...this.state };
         await this.props.updateStudent(student);
-    }
-
-    handleSubmit(event){
-        event.preventDefault();
+        await this.getDataFromServer();
+        this.props.toggleEditModal();
     }
 
     handleInputChange(event) {
         const { value, name } = event.target;
-        this.props.updateInput(name, value);
 
+        this.setState({
+            [name]: value
+        });
     }
 
-    clearInputData(){
-        for(let key in this.props.form){
-            this.props.clearInput(key);
-        }
-    }
     render(){
-        console.log("this is the response in update student: ", updateStudent);
-        const { studentList, modal, student, modalOpen, studentName} = this.props;
-        const { student_name, class_name, grade_value } = this.props.form;
-        console.log("student name: ", student_name);
-        console.log("student in props without form: ", studentName);
-        console.log("THis is the STUDENT IN the EDIT MODAL: ", student);
-
+        const { student_name, class_name, grade_value } = this.state;
 
         return(
-            <div className={`modal ${modalOpen}`}>
-            <div className="modal-content">
-                <span onClick={()=>{this.props.hideModal()}} className="close-btn">&times;</span>
-                <h2 className="page-header title">Edit Student</h2>
-                <h5>Student Record</h5>
-                <div className="student-info">
-                <div className="input-group form-group">
-                        <span className="input-group-addon">
-                            <span className="glyphicon glyphicon-user"></span>
-                        </span>
-                        <input value={student_name} onChange={this.handleInputChange} type="text" className="form-control" name="student_name" id="studentName" placeholder="Student Name" />
-                    </div>
-                    <div className="input-group form-group">
-                        <span className="input-group-addon">
-                            <span className="glyphicon glyphicon-list-alt"></span>
-                        </span>
-                        <input value={class_name} onChange={this.handleInputChange} type="text" className="form-control" name="class_name" id="course"
-                            placeholder="Student Course" />
-                    </div>
-                    <div className="input-group form-group">
-                        <span className="input-group-addon">
-                            <span className="glyphicon glyphicon-education"></span>
-                        </span>
-                        <input value={grade_value} onChange={this.handleInputChange} type="number" className="form-control" name="grade_value" id="studentGrade"
-                            placeholder="Student Grade" />
-                    </div>
-                </div>    
-                <div className="button-holder">
-                    <button 
-                        onClick={()=>{
-                            console.log("edit modal modal opened: ", this.props)
-                        this.editStudent();
-                        this.getDataFromServer();
-                        this.props.hideModal()
-
-                        }} 
-                        className="confirm">
-                        Update
+            <div className="modal show">
+                <div className="modal-content">
+                    <span onClick={this.props.toggleEditModal} className="close-btn">&times;</span>
+                    <h2 className="page-header title">Edit Student</h2>
+                    <h5>Student Record</h5>
+                    <div className="student-info">
+                        <div className="input-group form-group">
+                                <span className="input-group-addon">
+                                    <span className="glyphicon glyphicon-user"></span>
+                                </span>
+                                <input value={student_name} onChange={this.handleInputChange} type="text" className="form-control" name="student_name" id="studentName" placeholder="Student Name" />
+                        </div>
+                        <div className="input-group form-group">
+                            <span className="input-group-addon">
+                                <span className="glyphicon glyphicon-list-alt"></span>
+                            </span>
+                            <input value={class_name} onChange={this.handleInputChange} type="text" className="form-control" name="class_name" id="course"
+                                placeholder="Student Course" />
+                        </div>
+                        <div className="input-group form-group">
+                            <span className="input-group-addon">
+                                <span className="glyphicon glyphicon-education"></span>
+                            </span>
+                            <input value={grade_value} onChange={this.handleInputChange} type="number" className="form-control" name="grade_value" id="studentGrade"
+                                placeholder="Student Grade" />
+                        </div>
+                    </div>    
+                    <div className="button-holder">
+                        <button onClick={this.editStudent} className="confirm">
+                            Update
                         </button>
-
-                    <button 
-                        onClick={()=>{
-                            this.props.hideModal()
-                            }}
-                        className="cancel">
-                        Cancel
+                        <button onClick={this.props.toggleEditModal} className="cancel">
+                            Cancel
                         </button>
+                    </div>
                 </div>
-            </div>
-        </div>        
-        )
-    }
+            </div>  
+        )  
+    }  
 }
-function mapStateToProps(state) {
-    const { student_name, class_name, grade_value } = state.inputReducer;
 
-    return ({
-        studentList: state.studentListReducer.studentList,
-        modal: state.modalReducer.isShowing,
-        student: state.modalReducer.student,
-        isShowingEdit: state.modalReducer.isShowingEdit,
-        updateStudent: state.studentListReducer.updateStudent,
-        studentName: state.modalReducer.studentName,
-        form: {
-            class_name,
-            student_name,
-            grade_value
-        }
-    });
-
-}
-export default connect(mapStateToProps, {getStudentList, showModal, hideModal, updateInput, clearInput, updateStudent})(EditModal);
+export default connect(null, { getStudentList, updateStudent})(EditModal);

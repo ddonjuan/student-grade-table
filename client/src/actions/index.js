@@ -46,7 +46,7 @@ export function updateStudent(student){
     const response = axios.post(path,{
          student
     });
-    console.log("this is the response in updateStudent: ", response);
+
     return{
         type: types.UPDATE_STUDENT,
         payload: response
