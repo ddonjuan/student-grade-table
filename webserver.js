@@ -13,7 +13,7 @@ database.connect( (error) => {
     console.log("database connection successful");
 } );
 
-webserver.use(express.static( __dirname + "/client" + "/public" ));
+webserver.use(express.static( __dirname + "/client" + "/build" ));
 
 // ====================================
 // ======= Endpoints start here =======
